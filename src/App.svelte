@@ -10,9 +10,8 @@
 	let videos = []
 	let playlistTitle = ""
 
-	let currentVideo = ""
-	let currentDescription = ""
-	let currentTitle = ""
+	let currentSnippet = {}
+	let currentUrl = ""
 
 	onMount(async () => {
 		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=50&playlistId=${playlistId}`)
@@ -55,15 +54,11 @@
 			<div class="list-group list-group-flush border-bottom" style="overflow-y: auto; height: 90vh; width: 380px;">
 				{#each videos as video}
 					<ListItem 
-						title={video.snippet.title} 
-						description={video.snippet.description} 
-						duration={video.snippet.duration} 
-						thumbnail={video.snippet.thumbnails.medium.url}
-						id={video.snippet.resourceId.videoId}
+						snippet={video.snippet}
 						first={video === videos[0]}
-						bind:currentVideo={currentVideo}
-						bind:currentDescription={currentDescription}
-						bind:currentTitle={currentTitle}>
+						url={video.snippet.resourceId.videoId}
+						bind:currentSnippet={currentSnippet}
+						bind:currentUrl={currentUrl}>
 					</ListItem>
 				{:else}
 					<p>Loading...</p>
@@ -72,14 +67,20 @@
 		</div>
 
 		<div style="width: 100%">
-			<iframe style="width:100%; height:70%" src="https://www.youtube.com/embed/{currentVideo}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-			<h1>{currentTitle}</h1>
-			<p>{currentDescription}</p>
 
-			<div class="d-flex flex-row">
-				<button class="btn btn-primary">Previous</button>
-				<button class="btn btn-primary mx-1">Next</button>
-			</div>
+			{#if currentSnippet != {}}
+				<iframe style="width:100%; height:70%" src="https://www.youtube.com/embed/{currentUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<h1>{currentSnippet.title}</h1>
+				<p>{currentSnippet.description}</p>
+
+				<div class="d-flex flex-row">
+					<button class="btn btn-primary">Previous</button>
+					<button class="btn btn-primary mx-1">Next</button>
+				</div>
+			{:else}
+				<p>Loading...</p>
+			{/if}
+
 			<div class="footer fixed-bottom bg-white text-dark p-1 m-1 ms-auto rounded" style="width:max-content;">
 				<small>powered by <a href="#e" class="text-link">BM Tech</a></small>
 			</div>
