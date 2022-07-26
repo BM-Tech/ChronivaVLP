@@ -12,6 +12,7 @@
 
 	let currentSnippet = {}
 	let currentUrl = ""
+	let currentVideoIndex = 0
 
 	onMount(async () => {
 		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=50&playlistId=${playlistId}`)
@@ -23,6 +24,22 @@
 		json = await res.json()
 		playlistTitle = json.items[0].snippet.title
 	})
+
+	function prevVideo(){
+		if(currentVideoIndex > 0){
+			currentVideoIndex--
+		}
+	}
+
+	function nextVideo(){
+		if(currentVideoIndex < 45){
+			currentVideoIndex++
+		}
+	}
+
+	$:{
+		console.log(currentVideoIndex)
+	}
 </script>
 
 <main>
@@ -57,8 +74,10 @@
 						snippet={video.snippet}
 						first={video === videos[0]}
 						url={video.snippet.resourceId.videoId}
+						index={video.snippet.position}
 						bind:currentSnippet={currentSnippet}
-						bind:currentUrl={currentUrl}>
+						bind:currentUrl={currentUrl}
+						bind:currentVideoIndex={currentVideoIndex}>
 					</ListItem>
 				{:else}
 					<p>Loading...</p>
@@ -74,8 +93,8 @@
 				<p>{currentSnippet.description}</p>
 
 				<div class="d-flex flex-row">
-					<button class="btn btn-primary">Previous</button>
-					<button class="btn btn-primary mx-1">Next</button>
+					<button class="btn btn-primary" on:click={prevVideo}>Previous</button>
+					<button class="btn btn-primary mx-1" on:click={nextVideo}>Next</button>
 				</div>
 			{:else}
 				<p>Loading...</p>

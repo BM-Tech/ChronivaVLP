@@ -1,6 +1,8 @@
 <script>
     export let snippet = {}
     export let currentSnippet = {}
+    export let currentVideoIndex = 0
+    export let index = 0
     export let url = ""
     export let currentUrl = ""
     export let first = false
@@ -8,10 +10,17 @@
     function selectVideo(){
         currentSnippet = snippet
         currentUrl = url
+        currentVideoIndex = index
     }
 
     if(first){
         selectVideo()
+    }
+
+    $: {
+        if (currentVideoIndex == index){
+            selectVideo()
+        }
     }
 </script>
 
@@ -27,5 +36,4 @@
         <img src={snippet.thumbnails.medium.url} alt="" style="width: 130px;" class="mb-2 rounded">
         <strong class="mb-1 mx-2">{snippet.title}</strong>
     </div>
-    <!-- <div class="col-10 mb-1 small">{description}</div> -->
 </a>
