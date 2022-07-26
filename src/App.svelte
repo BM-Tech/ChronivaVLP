@@ -45,7 +45,7 @@
 <main>
 	<header class="d-flex flex-wrap justify-content-center py-2">
 		<div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-			<img src="images/icon.png" alt="logo" class="mx-3 my-0" width=50 style="filter: brightness(0%);">
+			<img src="images/icon.png" alt="logo" class="mx-3 my-0" width=50 style="filter: brightness(50%);">
 			<span class="fs-4">Chroniva <strong>Video Learning</strong></span>
 		</div>
 		
@@ -62,7 +62,7 @@
 		</div>
 		<form class="form-inline d-flex">
 		  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		  <button class="btn btn-outline-success my-2 mx-2 my-sm-0" type="submit">Search</button>
+		  <button class="btn btn-secondary my-2 mx-2 my-sm-0" type="submit">Search</button>
 		</form>
 	</nav>
 	
@@ -85,7 +85,7 @@
 			</div>
 		</div>
 
-		<div style="width: 100%">
+		<div style="width: 100%; height: 90vh; overflow-y:auto" class="px-3 py-3 bg-light">
 
 			{#if currentSnippet != {}}
 				<iframe style="width:100%; height:70%" src="https://www.youtube.com/embed/{currentUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -93,14 +93,14 @@
 				<p>{currentSnippet.description}</p>
 
 				<div class="d-flex flex-row">
-					<button class="btn btn-primary" on:click={prevVideo}>Previous</button>
-					<button class="btn btn-primary mx-1" on:click={nextVideo}>Next</button>
+					<button class="btn btn-secondary" on:click={prevVideo}>Previous</button>
+					<button class="btn btn-secondary mx-1" on:click={nextVideo}>Next</button>
 				</div>
 			{:else}
 				<p>Loading...</p>
 			{/if}
 
-			<div class="footer fixed-bottom bg-white text-dark p-1 m-1 ms-auto rounded" style="width:max-content;">
+			<div class="footer fixed-bottom p-1 m-1 ms-auto rounded" style="width:max-content;">
 				<small>powered by <a href="#e" class="text-link">BM Tech</a></small>
 			</div>
 		</div>
