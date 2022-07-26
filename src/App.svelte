@@ -1,0 +1,89 @@
+<script>
+	import 'bootstrap/dist/css/bootstrap.min.css';
+	import 'bootstrap/dist/js/bootstrap.min.js';
+	import ListItem from './ListItem.svelte';
+	import { onMount } from 'svelte';
+	
+	export let playlistId
+	let API_KEY = 'AIzaSyCiGBVnqNCTOY6MkQ9789zEN-xccNCiVW0';
+	
+	let videos = []
+	let playlistTitle = ""
+
+	let currentVideo = ""
+	let currentDescription = ""
+	let currentTitle = ""
+
+	onMount(async () => {
+		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=50&playlistId=${playlistId}`)
+		let json = await res.json()
+		console.log(json)
+		videos = await json.items
+
+		res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?key=${API_KEY}&id=${playlistId}&part=id,snippet&fields=items(id,snippet(title,channelId,channelTitle))`)
+		json = await res.json()
+		playlistTitle = json.items[0].snippet.title
+	})
+</script>
+
+<main>
+	<header class="d-flex flex-wrap justify-content-center py-2">
+		<div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+			<img src="images/icon.png" alt="logo" class="mx-3 my-0" width=50 style="filter: brightness(0%);">
+			<span class="fs-4">Chroniva <strong>Video Learning</strong></span>
+		</div>
+		
+		<ul class="nav nav-pills mx-3 responsivenav">
+			<li class="nav-item"><a href="https://chroniva.com/" class="nav-link">Chroniva Home</a></li>
+			<li class="nav-item"><a href="https://www.youtube.com/channel/UCBgFYIAmYq2YqO_ghdsHToA" class="nav-link">Youtube</a></li>
+		</ul>
+	</header>
+
+	<nav class="navbar navbar-light bg-light justify-content-between px-2 pt-2">
+		<div class="d-flex">
+			<strong class="px-2">{playlistTitle}</strong>
+			<p class="px-2">{videos.length} Lessons</p>
+		</div>
+		<form class="form-inline d-flex">
+		  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+		  <button class="btn btn-outline-success my-2 mx-2 my-sm-0" type="submit">Search</button>
+		</form>
+	</nav>
+	
+	<div class="d-flex">
+		<div class="d-flex flex-column align-items-stretch flex-shrink-0" style="">
+			<div class="list-group list-group-flush border-bottom" style="overflow-y: auto; height: 90vh; width: 380px;">
+				{#each videos as video}
+					<ListItem 
+						title={video.snippet.title} 
+						description={video.snippet.description} 
+						duration={video.snippet.duration} 
+						thumbnail={video.snippet.thumbnails.medium.url}
+						id={video.snippet.resourceId.videoId}
+						first={video === videos[0]}
+						bind:currentVideo={currentVideo}
+						bind:currentDescription={currentDescription}
+						bind:currentTitle={currentTitle}>
+					</ListItem>
+				{:else}
+					<p>Loading...</p>
+				{/each}
+			</div>
+		</div>
+
+		<div style="width: 100%">
+			<iframe style="width:100%; height:70%" src="https://www.youtube.com/embed/{currentVideo}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<h1>{currentTitle}</h1>
+			<p>{currentDescription}</p>
+
+			<div class="d-flex flex-row">
+				<button class="btn btn-primary">Previous</button>
+				<button class="btn btn-primary mx-1">Next</button>
+			</div>
+			<div class="footer fixed-bottom bg-white text-dark p-1 m-1 ms-auto rounded" style="width:max-content;">
+				<small>powered by <a href="#e" class="text-link">BM Tech</a></small>
+			</div>
+		</div>
+	</div>
+
+</main>
