@@ -15,7 +15,7 @@
 	let currentVideoIndex = 0
 
 	onMount(async () => {
-		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=50&playlistId=${playlistId}`)
+		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=200&playlistId=${playlistId}`)
 		let json = await res.json()
 		console.log(json)
 		videos = await json.items
@@ -37,9 +37,7 @@
 		}
 	}
 
-	$:{
-		console.log(currentVideoIndex)
-	}
+	let coursesPopupOpen = false
 </script>
 
 <main>
@@ -50,13 +48,29 @@
 		</div>
 		
 		<ul class="nav nav-pills mx-3 responsivenav">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#e" on:click={()=>{coursesPopupOpen = !coursesPopupOpen}}>
+					Courses
+				</a>
+				<div class="dropdown-menu" style="display: {coursesPopupOpen ? 'block' : 'none'}">
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk8qD2QxNyR_0TvllCrYNG23">Algebra 1</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk__52_QOHR9kPRACamrDI9x">Calculus 1 & 2</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk_GzyIT3lRuxScc_8_zY3ie">Calculus 3</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk9gBajSZZ__IyETOy2dYEu3">Intro to Programming</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk9LPKr_4Hi0mZe9F7Jky2V9">Basics of Python</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk-xng87BBwAdS55rxVHryZQ">Quick Economics</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk9rfqi90SnUowhv5KiI3GAr">Intro to Music Theory</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk-JP81La-k0N9dl1zwy1VWv">Physics</a>
+					<a class="dropdown-item" href="?id=PL9i49hRn8Tk-sGLWDBPpTtTQHQGSVnToa">Chemistry</a>
+				</div>
+			</li>
 			<li class="nav-item"><a href="https://chroniva.com/" class="nav-link">Chroniva Home</a></li>
 			<li class="nav-item"><a href="https://www.youtube.com/channel/UCBgFYIAmYq2YqO_ghdsHToA" class="nav-link">Youtube</a></li>
 		</ul>
 	</header>
 
-	<nav class="navbar navbar-light bg-light justify-content-between px-2 pt-2">
-		<div class="d-flex">
+	<nav class="navbar navbar-light justify-content-between px-2 py-0 border-top border-bottom">
+		<div class="d-flex mt-3">
 			<strong class="px-2">{playlistTitle}</strong>
 			<p class="px-2">{videos.length} Lessons</p>
 		</div>
@@ -67,7 +81,7 @@
 	</nav>
 	
 	<div class="d-flex">
-		<div class="d-flex flex-column align-items-stretch flex-shrink-0" style="">
+		<div class="d-flex flex-column align-items-stretch flex-shrink-0" style="border-right:1px solid lightgray">
 			<div class="list-group list-group-flush border-bottom" style="overflow-y: auto; height: 90vh; width: 380px;">
 				{#each videos as video}
 					<ListItem 
@@ -82,10 +96,15 @@
 				{:else}
 					<p>Loading...</p>
 				{/each}
+
+				<div class="d-flex flex-row align-items-center justify-content-center position-absolute w-100">
+					<button class="btn btn-secondary btn-lg mx-4" on:click={prevVideo}>Previous</button>
+					<button class="btn btn-secondary btn-lg mx-4" on:click={nextVideo}>Next</button>
+				</div>
 			</div>
 		</div>
 
-		<div style="width: 100%; height: 90vh; overflow-y:auto" class="px-3 py-3 bg-light">
+		<div style="width: 100%; height: 80vh; overflow-y:auto" class="px-3 py-3">
 
 			{#if currentSnippet != {}}
 				<iframe style="width:100%; height:70%" src="https://www.youtube.com/embed/{currentUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
