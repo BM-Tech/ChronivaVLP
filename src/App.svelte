@@ -75,8 +75,10 @@
 			<p class="px-2">{videos.length} Lessons</p>
 		</div>
 		<form class="form-inline d-flex">
-		  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		  <button class="btn btn-secondary my-2 mx-2 my-sm-0" type="submit">Search</button>
+			<button class="btn btn-success mx-1" on:click|preventDefault={prevVideo}>Previous</button>
+			<button class="btn btn-success mx-3" on:click|preventDefault={nextVideo}>Next</button>
+		  	<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+		  	<button class="btn btn-secondary my-2 mx-2 my-sm-0" type="submit">Search</button>
 		</form>
 	</nav>
 	
@@ -97,10 +99,8 @@
 					<p>Loading...</p>
 				{/each}
 
-				<div class="d-flex flex-row align-items-center justify-content-center position-absolute w-100">
-					<button class="btn btn-secondary btn-lg mx-4" on:click={prevVideo}>Previous</button>
-					<button class="btn btn-secondary btn-lg mx-4" on:click={nextVideo}>Next</button>
-				</div>
+				<!-- <div class="d-flex flex-row align-items-center justify-content-center position-absolute w-100">
+				</div> -->
 			</div>
 		</div>
 
@@ -110,11 +110,6 @@
 				<iframe style="width:100%; height:70%" src="https://www.youtube.com/embed/{currentUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				<h1>{currentSnippet.title}</h1>
 				<p>{currentSnippet.description}</p>
-
-				<div class="d-flex flex-row">
-					<button class="btn btn-secondary" on:click={prevVideo}>Previous</button>
-					<button class="btn btn-secondary mx-1" on:click={nextVideo}>Next</button>
-				</div>
 			{:else}
 				<p>Loading...</p>
 			{/if}
