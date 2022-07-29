@@ -40,6 +40,18 @@
 	let coursesPopupOpen = false
 </script>
 
+<svelte:head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-HDVL2KXFQM"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-HDVL2KXFQM');
+	</script>
+</svelte:head>
+
 <main>
 	<header class="d-flex flex-wrap justify-content-center py-2">
 		<div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
