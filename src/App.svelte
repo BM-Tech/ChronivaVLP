@@ -15,13 +15,29 @@
 	let currentVideoIndex = 0
 
 	onMount(async () => {
-		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=200&playlistId=${playlistId}`)
-		let json = await res.json()
-		console.log(json)
-		videos = await json.items
+		let hasNextPage = true
+		let pageToken = ""
+		while(hasNextPage){
+			let query = `https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&type=video&part=snippet&maxResults=200&playlistId=${playlistId}`
+			if(pageToken != ""){
+				query += `&pageToken=${pageToken}`
+			}
 
-		res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?key=${API_KEY}&id=${playlistId}&part=id,snippet&fields=items(id,snippet(title,channelId,channelTitle))`)
-		json = await res.json()
+			let res = await fetch(query)
+			let json = await res.json()
+			
+			if(json.nextPageToken == undefined){
+				hasNextPage = false
+			}
+			else{
+				pageToken = json.nextPageToken
+			}
+			let pageVideos = await json.items
+			videos = videos.concat(pageVideos)
+		}
+
+		let res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?key=${API_KEY}&id=${playlistId}&part=id,snippet&fields=items(id,snippet(title,channelId,channelTitle))`)
+		let json = await res.json()
 		playlistTitle = json.items[0].snippet.title
 	})
 
