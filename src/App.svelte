@@ -3,7 +3,19 @@
 	import 'bootstrap/dist/js/bootstrap.min.js';
 	import ListItem from './ListItem.svelte';
 	import { onMount } from 'svelte';
-	
+	import Whiteboard from './Whiteboard.svelte'
+	let isOpen
+	let title
+	let message
+	// let whiteboardOpen = false;
+
+	// function openWhiteboard() {
+	// 	whiteboardOpen = !whiteboardOpen;
+	// }
+
+	function handleClick() {
+		openModal(Modal, { title: "Alert", message: "This is an alert" })
+	}
 	export let playlistId
 	let API_KEY = 'AIzaSyCiGBVnqNCTOY6MkQ9789zEN-xccNCiVW0';
 	
@@ -69,6 +81,7 @@
 </svelte:head>
 
 <main>
+	<!-- <Whiteboard style="display: {(whiteboardOpen) ? 'block' : 'none'}"></Whiteboard> -->
 	<header class="d-flex flex-wrap justify-content-center py-2">
 		<div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
 			<img src="images/icon.png" alt="logo" class="mx-3 my-0" width=50 style="filter: brightness(50%);">
@@ -76,6 +89,19 @@
 		</div>
 		
 		<ul class="nav nav-pills mx-3 responsivenav">
+			<li class="nav-item">
+				<Whiteboard>
+					<div slot="trigger" let:open>
+					  <a class="nav-link" type="button" on:click={open}>Whiteboard</a>
+					</div>
+					<div slot="header">
+					  <h1>Whiteboard</h1>
+					</div>
+					<div slot="footer" let:store={{close}}>
+					  <button on:click={close}>Close Whiteboard</button>
+					</div>
+				</Whiteboard>
+			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#e" on:click={()=>{coursesPopupOpen = !coursesPopupOpen}}>
 					Courses
