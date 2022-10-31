@@ -7,24 +7,24 @@
     }
 
     window.addEventListener('click', function(e){   
-        try{
-            if (!document.getElementById('content').contains(e.target) && e.target.id != btnid) {
-                state = false
-            }
-        } catch(e){
-            
-        }
+        // try{
+        //     if (!document.getElementById('content').contains(e.target) && e.target.id != btnid) {
+        //         state = false
+        //     }
+        // } catch(e){
+        //     // state = true
+        // }
     });
 </script>
 
-{#if state}
+<div style="display: {(state) ? 'block' : 'none'}">
     <main transition:scale>
         <div class="content" id="content">
             <a class="right" href="#/" role="button" on:click|preventDefault={toggleState}>Close</a>
             <slot></slot>
         </div>
     </main>
-{/if}
+</div>
 
 <style>
     main {
