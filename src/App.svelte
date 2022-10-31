@@ -1,13 +1,14 @@
 <script>
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import 'bootstrap/dist/js/bootstrap.min.js';
+	import '@fortawesome/fontawesome-free'
 	import ListItem from './ListItem.svelte';
 	import { onMount } from 'svelte';
-	import Whiteboard from './Whiteboard.svelte'
-import Popover from './Popover.svelte';
-	let isOpen
-	let title
-	let message
+	import Popover from './Popover.svelte';
+    import Embed from './Embed.svelte';
+	// let isOpen
+	// let title
+	// let message
 	// let whiteboardOpen = false;
 
 	// function openWhiteboard() {
@@ -68,6 +69,8 @@ import Popover from './Popover.svelte';
 
 	let coursesPopupOpen = false
 	let whiteboardOpen = false
+	let calculatorOpen = false
+	let graphOpen = false
 </script>
 
 <svelte:head>
@@ -84,9 +87,20 @@ import Popover from './Popover.svelte';
 
 <main>
 	<Popover bind:state={whiteboardOpen} btnid="whiteboardbtn">
-		<br><br>
-		<h1>Whiteboard</h1>
+		<br>
+		<Embed name="Whiteboard" url="https://www.web-whiteboard.io/?id=124540&embedToken=e1GF+tS62ojeH2MC0Qk5SJaH1Q6WRWbM"/>
 	</Popover>
+
+	<Popover bind:state={calculatorOpen} btnid="calcbtn">
+		<br>
+		<Embed name="Calculator" url="https://www.desmos.com/scientific"/>
+	</Popover>
+
+	<Popover bind:state={graphOpen} btnid="graphbtn">
+		<br>
+		<Embed name="Graphing Calculator" url="https://www.desmos.com/calculator"/>
+	</Popover>
+
 	<!-- <Whiteboard style="display: {(whiteboardOpen) ? 'block' : 'none'}"></Whiteboard> -->
 	<header class="d-flex flex-wrap justify-content-center py-2">
 		<div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -96,7 +110,7 @@ import Popover from './Popover.svelte';
 		
 		<ul class="nav nav-pills mx-3 responsivenav">
 			<li class="nav-item">
-				<a class="nav-link" href="#3" id="whiteboardbtn" on:click={()=>{whiteboardOpen = !whiteboardOpen}}>Whiteboard</a>
+				<!-- <a class="nav-link" href="#3" id="whiteboardbtn" on:click={()=>{whiteboardOpen = !whiteboardOpen}}>Whiteboard</a> -->
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#e" on:click={()=>{coursesPopupOpen = !coursesPopupOpen}}>
@@ -164,8 +178,15 @@ import Popover from './Popover.svelte';
 				<p>Loading...</p>
 			{/if}
 
-			<div class="footer fixed-bottom p-1 m-1 ms-auto rounded" style="width:max-content;">
-				<small>powered by <a href="#e" class="text-link">BM Tech</a></small>
+			<div class="footer fixed-bottom p-3 m-1 ms-auto rounded" style="width:max-content;">
+				<button id="whiteboardbtn" on:click={()=>{whiteboardOpen = !whiteboardOpen}} class="btn btn-float fab btn-primary mx-1"><i class="fa-solid fa-chalkboard"></i></button>
+				<button id="calcbtn" on:click={()=>{calculatorOpen = !calculatorOpen}} class="btn btn-float fab btn-primary mx-1"><i class="fa-solid fa-calculator"></i></button>
+				<button id="graphbtn" on:click={()=>{graphOpen = !graphOpen}} class="btn btn-float fab btn-primary mx-1"><i class="fa-solid fa-chart-line"></i></button>
+				
+<!-- 
+				<br>
+				<small>powered by <a href="#e" class="text-link">BM Tech</a></small> -->
+
 			</div>
 		</div>
 	</div>

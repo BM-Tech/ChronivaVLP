@@ -7,8 +7,12 @@
     }
 
     window.addEventListener('click', function(e){   
-        if (!document.getElementById('content').contains(e.target) && e.target.id != btnid) {
-            state = false
+        try{
+            if (!document.getElementById('content').contains(e.target) && e.target.id != btnid) {
+                state = false
+            }
+        } catch(e){
+            
         }
     });
 </script>
